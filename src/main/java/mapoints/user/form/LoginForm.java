@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-public class PasswordForm extends PhoneNumberForm{
+public class LoginForm extends PhoneNumberForm{
 
     @NotBlank(message = "error.empty-password")
     @Getter

@@ -3,8 +3,9 @@ package mapoints.user.controller;
 import mapoints.lib.service.Message;
 import mapoints.lib.view.ApiResponse;
 import mapoints.lib.view.EntityApiResponse;
-import mapoints.user.form.PasswordForm;
+import mapoints.user.form.LoginForm;
 import mapoints.user.form.PhoneNumberForm;
+import mapoints.user.form.PasswordResetForm;
 import mapoints.user.model.UserType;
 import mapoints.user.service.UserAuthService;
 import mapoints.user.service.VerificationCodeService;
@@ -22,7 +23,7 @@ public abstract class UserController {
     private VerificationCodeService verificationCodeService;
 
     @PostMapping("login")
-    public EntityApiResponse<AuthUserView> login(@RequestBody @Valid PasswordForm form){
+    public EntityApiResponse<AuthUserView> login(@RequestBody @Valid LoginForm form){
         form.setUserType(getUserType());
         return new EntityApiResponse<>(userAuthService.login(form));
     }
@@ -40,6 +41,12 @@ public abstract class UserController {
                 HttpStatus.OK.value(),
                 msg
         );
+    }
+
+    @PostMapping("reset_password")
+    public EntityApiResponse<AuthUserView> resetPassword(@RequestBody @Valid PasswordResetForm form){
+        form.setUserType(getUserType());
+        return new EntityApiResponse<>(userAuthService.resetPassword(form));
     }
 
 

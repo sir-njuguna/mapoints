@@ -3,7 +3,9 @@ package mapoints.user.service;
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
 import mapoints.lib.service.BaseService;
-import mapoints.user.form.PasswordForm;
+import mapoints.user.form.LoginForm;
+import mapoints.user.form.PasswordResetForm;
+import mapoints.user.form.PhoneNumberForm;
 import mapoints.user.form.UserRegistrationForm;
 import mapoints.user.model.User;
 import mapoints.user.model.UserType;
@@ -49,7 +51,7 @@ public class UserAuthService extends BaseService<User, UserRepository> {
         return repository.existsByPhoneNumberAndUserType(phoneNumber, userType);
     }
 
-    public AuthUserView login(PasswordForm form){
+    public AuthUserView login(LoginForm form){
         Optional<User> userOpt = repository.findByPhoneNumberAndUserType(
                 form.getPhoneNumber(),
                 form.getUserType()
@@ -73,7 +75,18 @@ public class UserAuthService extends BaseService<User, UserRepository> {
         return onUserAuthentication(user);
     }
 
-    private User getUser(PasswordForm form){
+    public AuthUserView resetPassword(PasswordResetForm form){
+        User user = getUser(form);
+        verificationCodeService.verifyVerificationCode(form, form.getVerificationCode());
+
+        user.setPassword(passwordEncoder.encode(form.getPassword()));
+        user = save(user);
+
+        return onUserAuthentication(user);
+    }
+
+
+    private User getUser(PhoneNumberForm form){
         Optional<User> userOpt = repository.findByPhoneNumberAndUserType(
                 form.getPhoneNumber(),
                 form.getUserType()

@@ -7,7 +7,7 @@ import org.apache.commons.lang.WordUtils;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserRegistrationForm extends PasswordForm {
+public class UserRegistrationForm extends LoginForm {
     @NotBlank(message = "error.blank-user-name")
     @Setter
     private String name;
