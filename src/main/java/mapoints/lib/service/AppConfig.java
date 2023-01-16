@@ -35,6 +35,7 @@ public class AppConfig {
 
         resourceLst.add(new ClassPathResource("application.properties"));
         resourceLst.add(new FileSystemResource("/opt/mapoints/jwt.properties"));
+        resourceLst.add(new FileSystemResource("/opt/mapoints/db.properties"));
 
         propertiesConfigurer.setLocations(resourceLst.toArray(new Resource[]{}));
 
