@@ -1,4 +1,4 @@
-package mapoints.shop;
+package mapoints.shop.model;
 
 import lombok.Getter;
 import lombok.Setter;

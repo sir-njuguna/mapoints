@@ -1,4 +1,4 @@
-package mapoints.user.form;
+package mapoints.shop.form;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import org.apache.commons.lang.WordUtils;
 
 import javax.validation.constraints.NotBlank;
 
-public class MerchantRegistrationForm extends UserRegistrationForm{
+public class ShopRegistrationForm {
 
     @NotBlank(message = "error.blank-shop-name")
     @Setter

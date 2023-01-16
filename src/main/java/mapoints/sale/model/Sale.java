@@ -3,7 +3,7 @@ package mapoints.sale.model;
 import lombok.Getter;
 import lombok.Setter;
 import mapoints.lib.model.BaseModel;
-import mapoints.shop.Shop;
+import mapoints.shop.model.Shop;
 import mapoints.user.model.User;
 
 import javax.persistence.Column;

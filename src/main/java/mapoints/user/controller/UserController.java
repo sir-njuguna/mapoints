@@ -6,6 +6,7 @@ import mapoints.lib.view.EntityApiResponse;
 import mapoints.user.form.LoginForm;
 import mapoints.user.form.PhoneNumberForm;
 import mapoints.user.form.PasswordResetForm;
+import mapoints.user.form.UserRegistrationForm;
 import mapoints.user.model.UserType;
 import mapoints.user.service.UserAuthService;
 import mapoints.user.service.VerificationCodeService;
@@ -21,6 +22,13 @@ import java.util.Locale;
 public abstract class UserController {
     protected UserAuthService userAuthService;
     private VerificationCodeService verificationCodeService;
+
+    @PostMapping("register")
+    public EntityApiResponse<AuthUserView> register(@RequestBody @Valid UserRegistrationForm form){
+        form.setUserType(getUserType());
+        AuthUserView view = userAuthService.register(form);
+        return new EntityApiResponse<>(view);
+    }
 
     @PostMapping("login")
     public EntityApiResponse<AuthUserView> login(@RequestBody @Valid LoginForm form){
