@@ -3,7 +3,7 @@ package mapoints.user.service;
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
 import mapoints.lib.service.BaseService;
-import mapoints.user.form.UserForm;
+import mapoints.user.form.PasswordForm;
 import mapoints.user.form.UserRegistrationForm;
 import mapoints.user.model.User;
 import mapoints.user.model.UserType;
@@ -18,11 +18,13 @@ import java.util.Optional;
 
 @Service
 public class UserAuthService extends BaseService<User, UserRepository> {
+    private VerificationCodeService verificationCodeService;
     private BCryptPasswordEncoder passwordEncoder;
     private JwtService jwtService;
 
     public AuthUserView register(UserRegistrationForm form){
         checkPhoneNumberExists(form.getPhoneNumber(), form.getUserType());
+        verificationCodeService.verifyVerificationCode(form, form.getVerificationCode());
 
         User user = new User();
         user.setName(form.getName());
@@ -47,7 +49,7 @@ public class UserAuthService extends BaseService<User, UserRepository> {
         return repository.existsByPhoneNumberAndUserType(phoneNumber, userType);
     }
 
-    public AuthUserView login(UserForm form){
+    public AuthUserView login(PasswordForm form){
         Optional<User> userOpt = repository.findByPhoneNumberAndUserType(
                 form.getPhoneNumber(),
                 form.getUserType()
@@ -71,7 +73,7 @@ public class UserAuthService extends BaseService<User, UserRepository> {
         return onUserAuthentication(user);
     }
 
-    private User getUser(UserForm form){
+    private User getUser(PasswordForm form){
         Optional<User> userOpt = repository.findByPhoneNumberAndUserType(
                 form.getPhoneNumber(),
                 form.getUserType()
@@ -98,9 +100,9 @@ public class UserAuthService extends BaseService<User, UserRepository> {
         return userView;
     }
 
-
-    private void generateAuthCode(UserForm form){
-
+    @Autowired
+    public void setVerificationCodeService(VerificationCodeService verificationCodeService) {
+        this.verificationCodeService = verificationCodeService;
     }
 
     @Autowired

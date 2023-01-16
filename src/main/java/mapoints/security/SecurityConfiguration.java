@@ -22,7 +22,9 @@ public class SecurityConfiguration  {
             AppConfig.CUSTOMER_BASE_URL+"/register/**",
             AppConfig.MERCHANT_BASE_URL+"/register/**",
             AppConfig.CUSTOMER_BASE_URL+"/login/**",
-            AppConfig.MERCHANT_BASE_URL+"/login/**"
+            AppConfig.MERCHANT_BASE_URL+"/login/**",
+            AppConfig.CUSTOMER_BASE_URL+"/generate_auth_code/**",
+            AppConfig.MERCHANT_BASE_URL+"/generate_auth_code/**"
 
     };
     @Bean

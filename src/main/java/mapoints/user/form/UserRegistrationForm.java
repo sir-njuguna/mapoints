@@ -1,15 +1,21 @@
 package mapoints.user.form;
 
 
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.WordUtils;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserRegistrationForm extends UserForm{
+public class UserRegistrationForm extends PasswordForm {
     @NotBlank(message = "error.blank-user-name")
     @Setter
     private String name;
+
+    @NotBlank(message = "error.empty-verification-code")
+    @Getter
+    @Setter
+    private String verificationCode;
 
     public String getName() {
         if(name != null){
