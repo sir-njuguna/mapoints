@@ -21,7 +21,6 @@ public class User extends BaseModel {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-
     @Getter
     @Setter
     private String phoneNumber;

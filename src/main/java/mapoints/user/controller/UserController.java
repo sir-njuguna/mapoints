@@ -8,7 +8,7 @@ import mapoints.user.form.PhoneNumberForm;
 import mapoints.user.form.PasswordResetForm;
 import mapoints.user.form.UserRegistrationForm;
 import mapoints.user.model.UserType;
-import mapoints.user.service.UserAuthService;
+import mapoints.user.service.AuthenticationUserService;
 import mapoints.user.service.VerificationCodeService;
 import mapoints.user.view.AuthUserView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +20,20 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 public abstract class UserController {
-    protected UserAuthService userAuthService;
+    protected AuthenticationUserService authenticationUserService;
     private VerificationCodeService verificationCodeService;
 
     @PostMapping("register")
     public EntityApiResponse<AuthUserView> register(@RequestBody @Valid UserRegistrationForm form){
         form.setUserType(getUserType());
-        AuthUserView view = userAuthService.register(form);
+        AuthUserView view = authenticationUserService.register(form);
         return new EntityApiResponse<>(view);
     }
 
     @PostMapping("login")
     public EntityApiResponse<AuthUserView> login(@RequestBody @Valid LoginForm form){
         form.setUserType(getUserType());
-        return new EntityApiResponse<>(userAuthService.login(form));
+        return new EntityApiResponse<>(authenticationUserService.login(form));
     }
 
 
@@ -54,15 +54,15 @@ public abstract class UserController {
     @PostMapping("reset_password")
     public EntityApiResponse<AuthUserView> resetPassword(@RequestBody @Valid PasswordResetForm form){
         form.setUserType(getUserType());
-        return new EntityApiResponse<>(userAuthService.resetPassword(form));
+        return new EntityApiResponse<>(authenticationUserService.resetPassword(form));
     }
 
 
     protected abstract UserType getUserType();
 
     @Autowired
-    public void setUserAuthService(UserAuthService userAuthService) {
-        this.userAuthService = userAuthService;
+    public void setUserAuthService(AuthenticationUserService authenticationUserService) {
+        this.authenticationUserService = authenticationUserService;
     }
 
     @Autowired

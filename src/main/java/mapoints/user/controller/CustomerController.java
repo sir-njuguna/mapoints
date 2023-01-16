@@ -5,8 +5,6 @@ import mapoints.user.model.UserType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
 @RestController
 @RequestMapping(AppConfig.CUSTOMER_BASE_URL)
 public class CustomerController extends UserController{

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserAuthService extends BaseService<User, UserRepository> {
+public class AuthenticationUserService extends BaseService<User, UserRepository> {
     private VerificationCodeService verificationCodeService;
     private BCryptPasswordEncoder passwordEncoder;
     private JwtService jwtService;
@@ -38,7 +38,7 @@ public class UserAuthService extends BaseService<User, UserRepository> {
         return onUserAuthentication(user);
     }
 
-    protected void checkPhoneNumberExists(String phoneNumber, UserType userType){
+    private void checkPhoneNumberExists(String phoneNumber, UserType userType){
         if(existsByPhoneNumber(phoneNumber, userType)){
             throw new CommonRuntimeException(
                     ExceptionType.ALREADY_EXISTS,
@@ -104,7 +104,7 @@ public class UserAuthService extends BaseService<User, UserRepository> {
 
     private AuthUserView onUserAuthentication(User user){
         JwtView jwtView = jwtService.generateJwt(user);
-        user.setRecentAuthId(jwtView.getJwtId());
+        user.setRecentAuthId(passwordEncoder.encode(jwtView.getJwtId()));
 
         user = save(user);
 

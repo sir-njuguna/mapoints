@@ -5,23 +5,23 @@ import lombok.Setter;
 import mapoints.lib.model.BaseModel;
 import mapoints.user.model.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"name", "merchant"})
+})
 public class Shop extends BaseModel {
     @ManyToOne
-    @JoinColumn(name = "owner")
+    @JoinColumn(name = "merchant")
     @Getter
     @Setter
-    private User owner;
+    private User merchant;
 
     @Getter
     @Setter
-    private String shopName;
+    private String name;
 
     @Getter
     @Setter
@@ -31,4 +31,8 @@ public class Shop extends BaseModel {
     @Getter
     @Setter
     private BigDecimal cashToPoint;
+
+    @Getter
+    @Setter
+    private Integer customersCount = 0;
 }

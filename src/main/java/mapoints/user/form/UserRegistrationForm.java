@@ -21,6 +21,6 @@ public class UserRegistrationForm extends LoginForm {
         if(name != null){
             name = WordUtils.capitalize(name.toLowerCase());
         }
-        return name;
+        return name.trim();
     }
 }

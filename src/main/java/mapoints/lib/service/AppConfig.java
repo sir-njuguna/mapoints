@@ -1,10 +1,18 @@
 package mapoints.lib.service;
 
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class AppConfig {
@@ -16,6 +24,21 @@ public class AppConfig {
         ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
         source.addBasenames("classpath:msg/messages");
         return source;
+    }
+
+    @Bean
+    public PropertySourcesPlaceholderConfigurer propertiesSource() {
+        final PropertySourcesPlaceholderConfigurer propertiesConfigurer = new PropertySourcesPlaceholderConfigurer();
+        propertiesConfigurer.setIgnoreResourceNotFound(false);
+
+        final List<Resource> resourceLst = new ArrayList<>();
+
+        resourceLst.add(new ClassPathResource("application.properties"));
+        resourceLst.add(new FileSystemResource("/opt/mapoints/jwt.properties"));
+
+        propertiesConfigurer.setLocations(resourceLst.toArray(new Resource[]{}));
+
+        return propertiesConfigurer;
     }
 
 
