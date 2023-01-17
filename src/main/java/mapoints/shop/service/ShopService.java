@@ -2,7 +2,10 @@ package mapoints.shop.service;
 
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
+import mapoints.lib.repository.BaseRepository;
 import mapoints.lib.service.BaseService;
+import mapoints.lib.view.PagedEntityApiResponse;
+import mapoints.shop.form.FetchShopForm;
 import mapoints.shop.form.ShopRegistrationForm;
 import mapoints.shop.model.Shop;
 import mapoints.shop.repository.ShopRepository;
@@ -10,7 +13,11 @@ import mapoints.shop.view.ShopView;
 import mapoints.user.model.User;
 import mapoints.user.service.BasicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShopService extends BaseService<Shop, ShopRepository> {
@@ -37,6 +44,17 @@ public class ShopService extends BaseService<Shop, ShopRepository> {
                     "shop.name-exits"
             );
         }
+    }
+
+    public PagedEntityApiResponse<List<ShopView>> fetchShops(FetchShopForm form){
+        User merchant = basicUserService.findByEntityId(form.getId());
+        Page<Shop> page = repository.findByMerchant(
+            merchant,
+            BaseRepository.defaultPageable(form.getPageNum(), form.getPageSize())
+        );
+
+        List<ShopView> views = page.stream().map(ShopView::new).collect(Collectors.toList());
+        return new PagedEntityApiResponse<>(page, views);
     }
 
     @Autowired
