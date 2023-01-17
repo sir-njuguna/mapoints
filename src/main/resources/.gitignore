@@ -1,3 +1,5 @@
+keys
 db.properties
 jwt.properties
 sms-credentials.properties
+mpesa-config.properties

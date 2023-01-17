@@ -31,12 +31,21 @@ dependencies {
     //commons-lang
     implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
 
+    //Hibernate types
+    implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '1.0.0'
+
     //JWT
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.auth0:java-jwt:4.0.0'
 
     //Africas Talking api
     implementation 'com.github.AfricasTalkingLtd.africastalking-java:core:3.4.7'
+
+    //Minidev json
+    implementation group: 'net.minidev', name: 'json-smart', version: '2.4.7'
+
+    //Google lib phone number
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.54'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
