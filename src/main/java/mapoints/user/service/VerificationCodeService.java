@@ -3,6 +3,8 @@ package mapoints.user.service;
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
 import mapoints.lib.service.BaseService;
+import mapoints.lib.service.Message;
+import mapoints.notification.sms.SmsService;
 import mapoints.user.form.PhoneNumberForm;
 import mapoints.user.model.VerificationCode;
 import mapoints.user.repository.VerificationCodeRepository;
@@ -23,6 +25,7 @@ public class VerificationCodeService extends BaseService<VerificationCode, Verif
     private final Integer NUMBER_OF_MINUTES_BEFORE_RETRY = 5;
 
     private BCryptPasswordEncoder passwordEncoder;
+    private SmsService smsService;
 
     public void generateVerificationCode(PhoneNumberForm form){
 
@@ -62,7 +65,8 @@ public class VerificationCodeService extends BaseService<VerificationCode, Verif
     }
 
     private void sendCode(PhoneNumberForm form, String code){
-        System.out.printf("%s %s%n", form.getPhoneNumber(), code);
+        String msg = String.format(Message.get("verification.code.sms"), code);
+        smsService.send(form.getPhoneNumber(), msg);
     }
 
     public void verifyVerificationCode(PhoneNumberForm form, String code){
@@ -106,5 +110,10 @@ public class VerificationCodeService extends BaseService<VerificationCode, Verif
     @Autowired
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setSmsService(SmsService smsService) {
+        this.smsService = smsService;
     }
 }

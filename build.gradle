@@ -16,6 +16,10 @@ configurations {
 
 repositories {
     mavenCentral()
+
+    maven {
+        url  "https://jitpack.io"
+    }
 }
 
 dependencies {
@@ -30,6 +34,9 @@ dependencies {
     //JWT
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.auth0:java-jwt:4.0.0'
+
+    //Africas Talking api
+    implementation 'com.github.AfricasTalkingLtd.africastalking-java:core:3.4.7'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
