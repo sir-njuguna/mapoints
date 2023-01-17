@@ -3,6 +3,7 @@ package mapoints.shop.model;
 import lombok.Getter;
 import lombok.Setter;
 import mapoints.lib.model.BaseModel;
+import mapoints.lib.service.FormatUtil;
 import mapoints.user.model.User;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Shop extends BaseModel {
     @Setter
     private String description;
 
-    @Column( precision = 15, scale = 5)
+    @Column(precision = FormatUtil.BIG_DECIMAL_PRECISION ,scale = FormatUtil.BIG_DECIMAL_SCALE)
     @Getter
     @Setter
     private BigDecimal cashToPoint;

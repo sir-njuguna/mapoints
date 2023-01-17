@@ -1,14 +1,17 @@
 package mapoints.lib.model;
 
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.RandomStringUtils;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 public abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

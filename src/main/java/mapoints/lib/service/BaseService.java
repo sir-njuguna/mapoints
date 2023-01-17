@@ -29,6 +29,7 @@ public abstract  class BaseService<T extends BaseModel, R extends BaseRepository
         return opt.get();
     }
 
+
     @Autowired
     public void setRepository(R repository) {
         this.repository = repository;

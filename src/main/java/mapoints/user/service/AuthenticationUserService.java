@@ -1,11 +1,11 @@
 package mapoints.user.service;
 
+import mapoints.account.service.AccountService;
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
 import mapoints.lib.service.BaseService;
 import mapoints.user.form.LoginForm;
 import mapoints.user.form.PasswordResetForm;
-import mapoints.user.form.PhoneNumberForm;
 import mapoints.user.form.UserRegistrationForm;
 import mapoints.user.model.User;
 import mapoints.user.model.UserType;
@@ -20,9 +20,11 @@ import java.util.Optional;
 
 @Service
 public class AuthenticationUserService extends BaseService<User, UserRepository> {
+    private BasicUserService basicUserService;
     private VerificationCodeService verificationCodeService;
     private BCryptPasswordEncoder passwordEncoder;
     private JwtService jwtService;
+    private AccountService accountService;
 
     public AuthUserView register(UserRegistrationForm form){
         checkPhoneNumberExists(form.getPhoneNumber(), form.getUserType());
@@ -35,6 +37,7 @@ public class AuthenticationUserService extends BaseService<User, UserRepository>
         user.setUserType(form.getUserType());
 
         user = save(user);
+        accountService.createAccount(user);
         return onUserAuthentication(user);
     }
 
@@ -64,7 +67,7 @@ public class AuthenticationUserService extends BaseService<User, UserRepository>
             );
         }
 
-        User user = getUser(form);
+        User user = basicUserService.getUser(form.getPhoneNumber(), form.getUserType());
         if(!passwordEncoder.matches(form.getPassword(), user.getPassword())){
             throw new CommonRuntimeException(
                     ExceptionType.NOT_AUTHORISED,
@@ -76,7 +79,7 @@ public class AuthenticationUserService extends BaseService<User, UserRepository>
     }
 
     public AuthUserView resetPassword(PasswordResetForm form){
-        User user = getUser(form);
+        User user = basicUserService.getUser(form.getPhoneNumber(), form.getUserType());
         verificationCodeService.verifyVerificationCode(form, form.getVerificationCode());
 
         user.setPassword(passwordEncoder.encode(form.getPassword()));
@@ -85,22 +88,6 @@ public class AuthenticationUserService extends BaseService<User, UserRepository>
         return onUserAuthentication(user);
     }
 
-
-    private User getUser(PhoneNumberForm form){
-        Optional<User> userOpt = repository.findByPhoneNumberAndUserType(
-                form.getPhoneNumber(),
-                form.getUserType()
-        );
-
-        if (userOpt.isEmpty()){
-            throw new CommonRuntimeException(
-                    ExceptionType.NOT_FOUND,
-                    "user.phone-number-does-not-exist"
-            );
-        }
-
-        return userOpt.get();
-    }
 
     private AuthUserView onUserAuthentication(User user){
         JwtView jwtView = jwtService.generateJwt(user);
@@ -111,6 +98,11 @@ public class AuthenticationUserService extends BaseService<User, UserRepository>
         AuthUserView userView = new AuthUserView(user);
         userView.setAuthToken(jwtView.getJwtToken());
         return userView;
+    }
+
+    @Autowired
+    public void setBasicUserService(BasicUserService basicUserService) {
+        this.basicUserService = basicUserService;
     }
 
     @Autowired
@@ -126,5 +118,10 @@ public class AuthenticationUserService extends BaseService<User, UserRepository>
     @Autowired
     public void setJwtService(JwtService jwtService) {
         this.jwtService = jwtService;
+    }
+
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
     }
 }
