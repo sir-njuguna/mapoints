@@ -21,4 +21,8 @@ public class ShopView extends BaseView<Shop> {
     public BigDecimal getCashToPoint(){
         return entity.getCashToPoint();
     }
+
+    public String getEntityId(){
+        return entity.getEntityId();
+    }
 }

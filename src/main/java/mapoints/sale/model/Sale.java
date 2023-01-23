@@ -3,13 +3,11 @@ package mapoints.sale.model;
 import lombok.Getter;
 import lombok.Setter;
 import mapoints.lib.model.BaseModel;
+import mapoints.lib.service.FormatUtil;
 import mapoints.shop.model.Shop;
 import mapoints.user.model.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -27,13 +25,23 @@ public class Sale extends BaseModel {
     @Setter
     private User customer;
 
-    @Column(precision = 15, scale = 5)
+    @Enumerated(EnumType.STRING)
     @Getter
     @Setter
-    private BigDecimal cashAmount;
+    private SaleType saleType;
 
-    @Column(precision = 15, scale = 5)
+    @Column(precision = FormatUtil.BIG_DECIMAL_PRECISION, scale = FormatUtil.BIG_DECIMAL_SCALE)
+    @Getter
+    @Setter
+    private BigDecimal amount;
+
+    @Column(precision = FormatUtil.BIG_DECIMAL_PRECISION, scale = FormatUtil.BIG_DECIMAL_SCALE)
     @Getter
     @Setter
     private BigDecimal points;
+
+    @Column(length = 100)
+    @Getter
+    @Setter
+    private String description;
 }

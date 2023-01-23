@@ -2,6 +2,7 @@ package mapoints.account.service;
 
 import mapoints.account.form.LedgerAction;
 import mapoints.account.model.Account;
+import mapoints.account.model.TransactionType;
 import mapoints.lib.service.FormatUtil;
 import mapoints.payment.form.PostedPaymentForm;
 import mapoints.payment.service.OnPostPaymentListener;
@@ -27,6 +28,7 @@ public class MerchantAccountCreditListener implements OnPostPaymentListener {
         ledgerAction.setAmount(payment.getAmount());
         ledgerAction.setPaymentChannel(payment.getPaymentChannel());
         ledgerAction.setTransactionCode(payment.getTransactionCode());
+        ledgerAction.setTransactionType(TransactionType.CREDIT_CASH);
 
         return ledgerAction;
     }

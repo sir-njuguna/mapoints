@@ -1,6 +1,7 @@
 package mapoints.lib.model;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.RandomStringUtils;
@@ -12,7 +13,9 @@ import java.util.UUID;
 
 @MappedSuperclass
 @TypeDef(name = "json", typeClass = JsonStringType.class)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class BaseModel {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)

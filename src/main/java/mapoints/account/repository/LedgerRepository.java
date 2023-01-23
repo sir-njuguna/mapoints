@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LedgerRepository extends BaseRepository<Ledger> {
     Page<Ledger> findByAccount(Account account, Pageable pageable);
+    boolean existsByTransactionCode(String transactionCode);
 }

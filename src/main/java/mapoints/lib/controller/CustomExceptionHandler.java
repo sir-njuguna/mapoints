@@ -1,7 +1,9 @@
 package mapoints.lib.controller;
 
-
 import mapoints.lib.exception.CommonRuntimeException;
+import mapoints.lib.exception.ExceptionType;
+import mapoints.lib.exception.InsufficientBalanceException;
+import mapoints.lib.service.FormatUtil;
 import mapoints.lib.service.Message;
 import mapoints.lib.view.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,6 @@ import java.util.Locale;
 @RestController
 @ControllerAdvice
 public class CustomExceptionHandler {
-
 
     @ExceptionHandler({CommonRuntimeException.class})
     public ApiResponse handleErrors(CommonRuntimeException exp, Locale locale) {
@@ -43,5 +44,14 @@ public class CustomExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 String.join("\n", errors)
         );
+    }
+
+    @ExceptionHandler({InsufficientBalanceException.class})
+    public ApiResponse handleErrors(InsufficientBalanceException exp, Locale locale) {
+        String msg = String.format(
+                Message.get("error.insufficient-balance", locale),
+                FormatUtil.formatAmount(exp.getCurrentBalance())
+        );
+        return new ApiResponse(false, ExceptionType.BAD_REQUEST.value(), msg);
     }
 }
