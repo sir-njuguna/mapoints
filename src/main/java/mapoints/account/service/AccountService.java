@@ -52,7 +52,7 @@ public class AccountService extends BaseService<Account, AccountRepository> {
         return getAccountByUser(user);
     }
 
-    private Account getAccountByUser(User user){
+    public Account getAccountByUser(User user){
         Optional<Account> accountOpt = repository.findTopByUser(user);
         if(accountOpt.isEmpty()){
             throw new CommonRuntimeException(

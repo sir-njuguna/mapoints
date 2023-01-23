@@ -35,9 +35,9 @@ public class FormatUtil {
     /**
      * format currency based on symbol
      */
-    public static String formatCurrency(BigDecimal amount, String currencyCode) {
+    public static String formatAmount(BigDecimal amount) {
         final NumberFormat NUM_FORMAT_WITH_COMMA_SEP_2DP = new DecimalFormat("#,###.00");
-        return currencyCode + " "+ NUM_FORMAT_WITH_COMMA_SEP_2DP.format(amount);
+        return NUM_FORMAT_WITH_COMMA_SEP_2DP.format(amount);
     }
 
     public static String getHumanReadableDateTime(Date date){

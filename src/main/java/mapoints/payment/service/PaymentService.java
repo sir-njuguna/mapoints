@@ -4,6 +4,7 @@ package mapoints.payment.service;
 import mapoints.account.form.LedgerAction;
 import mapoints.account.model.Account;
 import mapoints.account.model.Ledger;
+import mapoints.account.model.TransactionType;
 import mapoints.account.service.AccountService;
 import mapoints.account.service.LedgerService;
 import mapoints.lib.exception.CommonRuntimeException;
@@ -104,6 +105,7 @@ public class PaymentService {
             ledgerAction.setAccountEntityId(paymentTransaction.getAccount().getEntityId());
             ledgerAction.setTransactionCode(paymentTransaction.getTransactionCode());
             ledgerAction.setPaymentChannel(paymentChannel);
+            ledgerAction.setTransactionType(TransactionType.CREDIT_CASH);
 
             Ledger ledger = ledgerService.credit(ledgerAction);
             paymentTransaction.setLedger(ledger);

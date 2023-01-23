@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mapoints.lib.model.BaseModel;
+import mapoints.lib.service.FormatUtil;
 import net.minidev.json.JSONObject;
 import org.hibernate.annotations.Type;
 
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @MappedSuperclass
 abstract class BaseMpesaResponse extends BaseModel {
-    @Column(precision = 19,scale = 10)
+    @Column(precision = FormatUtil.BIG_DECIMAL_PRECISION, scale = FormatUtil.BIG_DECIMAL_SCALE)
     protected BigDecimal amount;
 
     @Type(type = "json")

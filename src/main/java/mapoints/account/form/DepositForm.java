@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 public class DepositForm {
 
-    @NotNull(message = "error.null-amount")
+    @NotNull(message = "error.empty-deposit-amount")
     @Getter
     @Setter
     private BigDecimal amount;
