@@ -1,11 +1,11 @@
 package mapoints.account.service;
 
 import mapoints.account.model.Account;
-import mapoints.account.model.Ledger;
 import mapoints.account.repository.AccountRepository;
 import mapoints.account.view.AccountView;
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
+import mapoints.lib.exception.InsufficientBalanceException;
 import mapoints.lib.service.BaseService;
 import mapoints.user.model.User;
 import mapoints.user.model.UserType;
@@ -13,6 +13,7 @@ import mapoints.user.service.BasicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,10 +71,16 @@ public class AccountService extends BaseService<Account, AccountRepository> {
         return new AccountView(account);
     }
 
+    public void checkBalance(Account account, BigDecimal amount){
+        if(account.getBalance().compareTo(amount) <= 0){
+            throw new InsufficientBalanceException(account.getBalance());
+        }
+    }
+
+
 
     @Autowired
     public void setBasicUserService(BasicUserService basicUserService) {
         this.basicUserService = basicUserService;
     }
-
 }
