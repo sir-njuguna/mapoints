@@ -1,5 +1,5 @@
 keys
 db.properties
 jwt.properties
-sms-credentials.properties
+africas-talking-credentials.properties
 mpesa-config.properties

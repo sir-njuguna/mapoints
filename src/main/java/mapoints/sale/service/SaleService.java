@@ -7,7 +7,6 @@ import mapoints.account.service.AccountService;
 import mapoints.account.service.LedgerService;
 import mapoints.lib.exception.CommonRuntimeException;
 import mapoints.lib.exception.ExceptionType;
-import mapoints.lib.exception.InsufficientBalanceException;
 import mapoints.lib.repository.BaseRepository;
 import mapoints.lib.service.BaseService;
 import mapoints.lib.service.FormatUtil;
@@ -50,11 +49,8 @@ public class SaleService extends BaseService<Sale, SaleRepository> {
             points = form.getAmount().divide(shop.getCashToPoint(), FormatUtil.ROUND_DOWN_MATH_CONTEXT);
         }
 
-        //Check if owner of the shop has sufficient balance
         Account merchantAccount = accountService.getAccountByUser(shop.getMerchant());
-        if(merchantAccount.getBalance().compareTo(points) <= 0){
-            throw new InsufficientBalanceException(merchantAccount.getBalance());
-        }
+        accountService.checkBalance(merchantAccount, points);
 
         Sale sale = new Sale();
         sale.setShop(shop);
@@ -78,6 +74,7 @@ public class SaleService extends BaseService<Sale, SaleRepository> {
 
         //Credit customer merchantAccount
         Account customerAccount = accountService.getAccountByUser(customer);
+
         LedgerAction credit = new LedgerAction();
         credit.setAccountEntityId(customerAccount.getEntityId());
         credit.setAmount(points);
