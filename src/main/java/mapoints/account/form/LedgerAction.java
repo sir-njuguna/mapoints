@@ -3,6 +3,7 @@ package mapoints.account.form;
 import lombok.Getter;
 import lombok.Setter;
 
+import mapoints.account.model.Account;
 import mapoints.account.model.TransactionType;
 import mapoints.payment.model.PaymentChannel;
 
@@ -12,7 +13,7 @@ public class LedgerAction {
 
     @Getter
     @Setter
-    private String accountEntityId;
+    private Account account;
 
     @Getter
     @Setter

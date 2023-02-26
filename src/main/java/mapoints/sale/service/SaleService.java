@@ -37,7 +37,8 @@ public class SaleService extends BaseService<Sale, SaleRepository> {
     private BasicUserService basicUserService;
     private ShopService shopService;
     private AccountService accountService;
-    private LedgerService ledgerService;
+
+    private List<AfterSaleListener> afterSaleListeners;
 
 
     public SaleView createSale(CreateSaleForm form){
@@ -62,27 +63,9 @@ public class SaleService extends BaseService<Sale, SaleRepository> {
 
         sale = save(sale);
 
-        //Debit merchant merchantAccount
-        LedgerAction debit = new LedgerAction();
-        debit.setAccountEntityId(merchantAccount.getEntityId());
-        debit.setAmount(points);
-        debit.setPaymentChannel(PaymentChannel.INTERNAL);
-        debit.setTransactionType(TransactionType.DEBIT_POINTS);
-        debit.setTransactionCode(ledgerService.generateTransactionCode(TransactionType.DEBIT_POINTS));
-
-        ledgerService.debit(debit);
-
-        //Credit customer merchantAccount
-        Account customerAccount = accountService.getAccountByUser(customer);
-
-        LedgerAction credit = new LedgerAction();
-        credit.setAccountEntityId(customerAccount.getEntityId());
-        credit.setAmount(points);
-        credit.setPaymentChannel(PaymentChannel.INTERNAL);
-        credit.setTransactionType(TransactionType.CREDIT_POINTS);
-        credit.setTransactionCode(ledgerService.generateTransactionCode(TransactionType.CREDIT_POINTS));
-
-        ledgerService.credit(credit);
+        for (AfterSaleListener listener : afterSaleListeners) {
+            listener.doAfterSale(sale);
+        }
 
         return new SaleView(sale);
     }
@@ -120,7 +103,7 @@ public class SaleService extends BaseService<Sale, SaleRepository> {
     }
 
     @Autowired
-    public void setLedgerService(LedgerService ledgerService) {
-        this.ledgerService = ledgerService;
+    public void setAfterSaleListeners(List<AfterSaleListener> afterSaleListeners) {
+        this.afterSaleListeners = afterSaleListeners;
     }
 }

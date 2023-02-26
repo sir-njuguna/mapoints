@@ -24,7 +24,7 @@ public class MerchantAccountCreditListener implements OnPostPaymentListener {
         Account account = accountService.getAccountByUser(phoneNumber, UserType.MERCHANT);
 
         LedgerAction ledgerAction = new LedgerAction();
-        ledgerAction.setAccountEntityId(account.getEntityId());
+        ledgerAction.setAccount(account);
         ledgerAction.setAmount(payment.getAmount());
         ledgerAction.setPaymentChannel(payment.getPaymentChannel());
         ledgerAction.setTransactionCode(payment.getTransactionCode());

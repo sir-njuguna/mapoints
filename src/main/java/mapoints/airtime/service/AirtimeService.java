@@ -54,7 +54,7 @@ public class AirtimeService {
         TransactionType transactionType = TransactionType.DEBIT_POINTS;
         LedgerAction form = new LedgerAction();
 
-        form.setAccountEntityId(account.getEntityId());
+        form.setAccount(account);
         form.setAmount(amount);
         form.setTransactionCode(ledgerService.generateTransactionCode(transactionType));
         form.setPaymentChannel(PaymentChannel.AFRICAS_TALKING_AIRTIME);

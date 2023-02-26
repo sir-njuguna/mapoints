@@ -31,7 +31,7 @@ public class LedgerService extends BaseService<Ledger, LedgerRepository> {
         if(!allowedTypes.contains(form.getTransactionType())){
             throw new CommonRuntimeException(ExceptionType.BAD_REQUEST, "auth.operation-not-allowed");
         }
-        Account account = accountService.findByEntityId(form.getAccountEntityId());
+        Account account = form.getAccount();
         BigDecimal balanceBefore = account.getBalance();
         BigDecimal balanceAfter = balanceBefore.add(form.getAmount());
 
@@ -58,7 +58,7 @@ public class LedgerService extends BaseService<Ledger, LedgerRepository> {
             throw new CommonRuntimeException(ExceptionType.BAD_REQUEST, "auth.operation-not-allowed");
         }
 
-        Account account = accountService.findByEntityId(form.getAccountEntityId());
+        Account account = form.getAccount();
         BigDecimal amount = form.getAmount();
         if(amount.compareTo(BigDecimal.ZERO) > 0){
             amount = amount.negate();
